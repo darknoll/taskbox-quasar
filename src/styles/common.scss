@@ -1,0 +1,16 @@
+.bg-main {
+    background-image: url(https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg);
+    background-position: center center;
+    background-size: cover;
+}
+
+.drop-list {
+    ::v-deep .q-item__section--avatar {
+        min-width: 0 !important;
+        max-width: 30px !important;
+    }
+    ::v-deep .q-item {
+        min-height: 30px;
+        padding: 6px 10px;
+    }
+}
