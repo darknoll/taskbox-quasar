@@ -3,10 +3,13 @@
     <q-page-container>
       <q-page>
         <q-list>
-          <template v-for="i in 20">
-            <list-item :key="i" />
+          <template v-for="(item, index) in uncompletedTasks">
+            <list-item :task="item" :key="index" />
             <q-separator />
           </template>
+          <q-inner-loading :showing="visible">
+            <q-spinner-puff size="50px" color="primary" />
+          </q-inner-loading>
         </q-list>
 
         <!-- place QPageScroller at end of page -->
@@ -23,11 +26,33 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import ListItem from '../components/ListItem';
 export default {
   name: 'TabList',
   components: {
     ListItem
+  },
+  data() {
+    return {
+      visible: true
+    };
+  },
+  computed: {
+    ...mapState('task', ['uncompletedTasks'])
+  },
+  mounted() {
+    this.$store
+      .dispatch('task/getUncompletedTasks')
+      .then(() => {
+        console.log('success');
+      })
+      .catch(() => {
+        console.log('fail');
+      })
+      .finally(() => {
+        this.visible = false;
+      });
   }
 };
 </script>

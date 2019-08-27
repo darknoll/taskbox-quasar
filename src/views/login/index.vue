@@ -89,21 +89,35 @@ export default {
       if (this.$refs.username.hasError || this.$refs.password.hasError) {
         this.formHasError = true;
       } else {
-        this.visible = true;
-        setTimeout(() => {
-          this.visible = false;
-          this.$q.notify({
-            icon: 'done',
-            color: 'positive',
-            message: '登录成功！'
+        this.$store
+          .dispatch('user/login', {
+            username: this.username,
+            password: this.password
+          })
+          .then(() => {
+            this.$q.notify({
+              icon: 'done',
+              color: 'positive',
+              message: '登录成功！'
+            });
+            this.$router.push({
+              name: 'index',
+              params: {
+                username: this.username
+              }
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              icon: 'warning',
+              color: 'warning',
+              message: '登录失败！',
+              timeout: 100
+            });
+          })
+          .finally(() => {
+            this.visible = false;
           });
-          this.$router.push({
-            name: 'index',
-            params: {
-              username: this.username
-            }
-          });
-        }, 3000);
       }
     }
   }

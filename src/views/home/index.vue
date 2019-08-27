@@ -28,7 +28,9 @@
             <q-tab name="uncompleted" label="未完成任务" />
             <q-tab name="completed" label="已完成任务" />
           </q-tabs>
+
           <q-toolbar-title />
+
           <uncompleted-tool-bar v-if="this.tab === 'uncompleted'" />
           <completed-tool-bar v-else />
         </q-toolbar>
