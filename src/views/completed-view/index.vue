@@ -1,7 +1,9 @@
 <template>
   <q-tab-panel :name="name">
-    <div class="text-h6">Completed</div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    <q-page>
+      <div class="text-h6">Completed</div>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    </q-page>
   </q-tab-panel>
 </template>
 

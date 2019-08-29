@@ -1,9 +1,11 @@
 import axios from 'axios';
+import router from '../router';
 import { getToken } from './auth';
+import { Notify } from 'quasar';
 
 // 创建一个axios实例对象
 const service = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  baseURL: 'http://192.168.0.226:8000',
   timeout: 10000,
   withCredentials: true
 });
@@ -22,37 +24,21 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   response => {
-    const res = response.data;
-    if (res.code === 200) {
-      return response;
-    } else if (res.code === 401) {
-      this.$q.notify({
-        icon: 'done',
-        color: 'positive',
-        message: 'token无效或过期，请重新登录！'
-      });
-      this.$router.push({ name: 'login' });
-    } else if (res.code === 500) {
-      this.$q.notify({
-        icon: 'done',
-        color: 'positive',
-        message: '服务端发生错误！'
-      });
-    } else {
-      this.$q.notify({
-        icon: 'done',
-        color: 'positive',
-        message: res.data
-      });
-    }
+    return response;
   },
   error => {
-    console.log('err' + error);
-    this.$q.notify({
-      icon: 'done',
-      color: 'positive',
-      message: error.message
-    });
+    let res = error.response;
+    if (res.status === 401) {
+      if (router.currentRoute.name !== 'login') {
+        Notify.create({
+          icon: 'warning',
+          color: 'warning',
+          message: 'Token无效或者过期，请重新登录！',
+          timeout: 500
+        });
+        router.push({ name: 'login' });
+      }
+    }
     return Promise.reject(error);
   }
 );

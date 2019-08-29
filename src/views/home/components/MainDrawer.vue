@@ -19,7 +19,12 @@
         </template>
         <q-item class="absolute-bottom">
           <q-item-section>
-            <q-btn color="primary" class="full-width" label="退出登录" />
+            <q-btn
+              color="primary"
+              class="full-width"
+              label="退出登录"
+              @click="onExit"
+            />
           </q-item-section>
         </q-item>
       </q-list>
@@ -27,7 +32,7 @@
 
     <q-img
       class="absolute-top"
-      src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+      :src="require('@/assets/custom-images/bg-material.jpg')"
       style="height: 180px"
     >
       <q-list
@@ -38,7 +43,7 @@
         <q-item class="person-icon">
           <q-item-section>
             <q-img
-              src="https://vuetifyjs.com/apple-touch-icon-180x180.png"
+              :src="require('@/assets/custom-images/avatar.webp')"
               style="max-width: 64px"
               :ratio="1"
             />
@@ -76,6 +81,19 @@ export default {
         { icon: 'help', text: '帮助' }
       ]
     };
+  },
+  methods: {
+    onExit() {
+      this.$store.dispatch('user/logoff').then(() => {
+        this.$q.notify({
+          icon: 'done',
+          color: 'primary',
+          message: '注销成功！',
+          timeout: 500
+        });
+        this.$router.push({ name: 'login' });
+      });
+    }
   }
 };
 </script>

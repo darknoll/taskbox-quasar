@@ -4,7 +4,13 @@
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleDrawer" />
         <q-toolbar-title>
-          <q-input standout="text-white" placeholder="搜索" dense dark>
+          <q-input
+            standout="text-white"
+            placeholder="搜索"
+            dense
+            dark
+            @focus="onFocus"
+          >
             <template v-slot:prepend>
               <q-icon name="search" />
             </template>
@@ -41,7 +47,7 @@
     <main-drawer ref="drawer"></main-drawer>
 
     <q-page-container>
-      <q-tab-panels v-model="tab" animated class="text-primary">
+      <q-tab-panels v-model="tab" animated swipeable class="text-primary">
         <uncompleted-view name="uncompleted" />
         <completed-view name="completed" />
       </q-tab-panels>
@@ -74,6 +80,9 @@ export default {
   methods: {
     toggleDrawer() {
       this.$refs.drawer.drawer = !this.$refs.drawer.drawer;
+    },
+    onFocus() {
+      this.$router.push({ name: 'search' });
     }
   }
 };

@@ -8,7 +8,7 @@
       <q-icon name="more_horiz" />
     </template>
     <div :class="task.receive_state ? 'read' : 'unread'">
-      <q-item>
+      <q-item clickable @click="onClick">
         <q-item-section>
           <q-item-label>{{ taskName }}</q-item-label>
           <q-item-label caption>{{ task.sender }}</q-item-label>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { getDateFromStamp } from '@/utils/helper';
 export default {
   name: 'ListItem',
@@ -48,17 +49,21 @@ export default {
     }
   },
   methods: {
+    ...mapActions('task', [
+      'pickTask',
+      'getTaskOpList',
+      'setSelectedUncompletedTask'
+    ]),
     onLeft({ reset }) {
       let option = this.task.receive_state ? 1 : 0;
       let command = this.task.receive_state ? '取消接收' : '接收';
-      this.$store
-        .dispatch('task/pickTask', { id: this.task.ObjectID, option: option })
+      this.pickTask({ id: this.task.ObjectID, option: option })
         .then(() => {
-          console.log(this.task.receive_state);
           this.$q.notify({
             icon: 'done',
             color: 'positive',
-            message: `${command}任务成功！`
+            message: `${command}任务成功！`,
+            timeout: 100
           });
         })
         .catch(() => {
@@ -75,8 +80,7 @@ export default {
     },
 
     onRight({ reset }) {
-      this.$store
-        .dispatch('task/getTaskOpList', this.task.ObjectID)
+      this.getTaskOpList(this.task.ObjectID)
         .then(response => {
           let commands = response.data.data;
           let actions = [
@@ -116,6 +120,13 @@ export default {
         .finally(() => {
           reset();
         });
+    },
+    onClick() {
+      this.setSelectedUncompletedTask(this.task.ObjectID);
+      this.$router.push({
+        name: 'task',
+        params: { id: this.task.ObjectID }
+      });
     }
   },
   beforeDestroy() {

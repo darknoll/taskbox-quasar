@@ -12,6 +12,16 @@ export function getUncompletedTasks() {
 }
 
 /**
+ * 根据ID获取未完成任务
+ */
+export function getUncompletedTask(id) {
+  return http({
+    url: `/api/tasks/${id}`,
+    method: 'get'
+  });
+}
+
+/**
  * 接收/取消接收未完成任务
  */
 export function pickTask(id, option) {
@@ -31,6 +41,16 @@ export function pickTask(id, option) {
 export function getTaskOpList(id) {
   return http({
     url: `/api/tasks/${id}/op-list`,
+    method: 'get'
+  });
+}
+
+/**
+ * 获取关联对象
+ */
+export function getTaskAssObjs(id) {
+  return http({
+    url: `/api/tasks/${id}/ass-objs`,
     method: 'get'
   });
 }

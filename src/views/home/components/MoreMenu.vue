@@ -1,6 +1,6 @@
 <template>
   <q-menu transition-show="flip-right" transition-hide="flip-left">
-    <q-list flat class="drop-list text-blue-8">
+    <q-list flat class="drop-list text-blue-8 bg-transparent">
       <q-item clickable v-ripple>
         <q-item-section avatar>
           <q-icon name="refresh"></q-icon>

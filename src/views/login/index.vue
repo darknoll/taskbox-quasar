@@ -98,7 +98,8 @@ export default {
             this.$q.notify({
               icon: 'done',
               color: 'positive',
-              message: '登录成功！'
+              message: '登录成功！',
+              timeout: 500
             });
             this.$router.push({
               name: 'index',
