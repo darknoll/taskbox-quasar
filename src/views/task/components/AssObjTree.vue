@@ -9,7 +9,7 @@
 <script>
 import { getFileTypeImg } from '@/utils/helper';
 export default {
-  name: 'AssObj',
+  name: 'AssObjTree',
   props: {
     name: {
       type: String,

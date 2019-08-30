@@ -1,18 +1,16 @@
 <template>
-  <div class="list-container">
-    <q-pull-to-refresh @refresh="refresh">
-      <q-list separator>
-        <template v-for="(item, index) in uncompletedTasks">
-          <list-item :task="item" :key="index" @changeVisible="changeVisible" />
-        </template>
-        <q-separator />
+  <q-pull-to-refresh @refresh="refresh">
+    <q-list separator style="min-height: 100px">
+      <template v-for="(item, index) in uncompletedTasks">
+        <list-item :task="item" :key="index" @changeVisible="changeVisible" />
+      </template>
+      <q-separator />
 
-        <q-inner-loading :showing="visible">
-          <q-spinner-puff size="50px" color="primary" />
-        </q-inner-loading>
-      </q-list>
-    </q-pull-to-refresh>
-  </div>
+      <q-inner-loading :showing="visible">
+        <q-spinner-puff size="50px" color="primary" />
+      </q-inner-loading>
+    </q-list>
+  </q-pull-to-refresh>
 </template>
 
 <script>

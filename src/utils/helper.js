@@ -61,6 +61,5 @@ export function getFileTypeImg(classID) {
   if (fileType === '') {
     return '';
   }
-  let filePath = require(`@/assets/file-type-images/${fileType}.png`);
-  return `img:${filePath}`;
+  return require(`@/assets/file-type-images/${fileType}.png`);
 }

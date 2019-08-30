@@ -47,7 +47,13 @@
     <main-drawer ref="drawer"></main-drawer>
 
     <q-page-container>
-      <q-tab-panels v-model="tab" animated swipeable class="text-primary">
+      <q-tab-panels
+        v-model="tab"
+        animated
+        swipeable
+        keep-alive
+        class="text-primary"
+      >
         <uncompleted-view name="uncompleted" />
         <completed-view name="completed" />
       </q-tab-panels>

@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh LpR fFf">
-    <q-header reveal class="text-white shadow-4 bg-main">
+    <q-header class="text-white shadow-4 bg-main">
       <q-toolbar class="text-white">
         <q-btn flat round dense icon="arrow_back" @click="onBack" />
         <q-toolbar-title v-if="selectedUncompletedTask" class="text-body1">{{
@@ -32,26 +32,33 @@
       </q-tabs>
     </q-header>
     <q-page-container>
-      <q-tab-panels v-model="tab" animated swipeable class="text-primary">
-        <process-info name="processInfo" />
-        <ass-obj name="assObj" :assObjs="assObjs" />
+      <q-tab-panels
+        v-model="tab"
+        animated
+        swipeable
+        keep-alive
+        class="text-primary"
+      >
+        <process-info name="processInfo" :id="id" />
+        <ass-obj-list name="assObj" :id="id" />
       </q-tab-panels>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import ProcessInfo from './components/ProcessInfo';
-import AssObj from './components/AssObj';
+import AssObjList from './components/AssObjList';
 export default {
   name: 'Task',
   components: {
     ProcessInfo,
-    AssObj
+    AssObjList
   },
   data() {
     return {
+      id: parseInt(this.$route.params.id),
       tab: 'processInfo',
       assObjs: []
     };
@@ -65,31 +72,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions('task', ['getUncompletedTask', 'getTaskAssObjs']),
     onBack() {
       this.$router.go(-1);
-    },
-    fetchData() {
-      let taskID = this.$route.params.id;
-      if (this.selectedUncompletedTask === null) {
-        this.getUncompletedTask(taskID).then(() => {
-          this.getTaskAssObjs(taskID).then(response => {
-            this.$nextTick(() => {
-              this.assObjs = response.data.data;
-            });
-          });
-        });
-      } else {
-        this.getTaskAssObjs(taskID).then(response => {
-          this.$nextTick(() => {
-            this.assObjs = response.data.data;
-          });
-        });
-      }
     }
-  },
-  created() {
-    this.fetchData();
   }
 };
 </script>

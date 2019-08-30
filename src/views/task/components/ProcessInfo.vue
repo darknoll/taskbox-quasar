@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { getDateTimeFromStamp, getPriority } from '@/utils/helper';
 import InfoItem from '../components/InfoItem';
 export default {
@@ -136,14 +136,27 @@ export default {
     name: {
       type: String,
       default: ''
+    },
+    id: {
+      type: Number,
+      default: 0
     }
   },
   computed: {
     ...mapState('task', ['selectedUncompletedTask'])
   },
   methods: {
+    ...mapActions('task', ['getUncompletedTask']),
     getDateTimeFromStamp,
-    getPriority
+    getPriority,
+    fetchData() {
+      this.getUncompletedTask(this.id).catch(() => {
+        console.log('get uncompleted task failed!');
+      });
+    }
+  },
+  created() {
+    this.fetchData();
   }
 };
 </script>
