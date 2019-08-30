@@ -1,9 +1,7 @@
 <template>
   <q-tab-panel :name="name">
-    <q-page>
-      <div class="q-px-md q-py-sm">
-        <q-tree :nodes="nodes" node-key="label" default-expand-all />
-      </div>
+    <q-page padding>
+      <q-tree :nodes="nodes" node-key="label" default-expand-all />
     </q-page>
   </q-tab-panel>
 </template>
@@ -38,7 +36,7 @@ export default {
         {
           label: `任务关联对象(${this.assObjs.length})`,
           header: 'root',
-          icon: 'person',
+          icon: 'tv',
           selectable: false,
           children: []
         }

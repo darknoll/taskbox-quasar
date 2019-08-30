@@ -1,46 +1,72 @@
 <template>
   <div class="list-container">
-    <q-page>
-      <q-list>
+    <q-pull-to-refresh @refresh="refresh">
+      <q-list separator>
         <template v-for="(item, index) in uncompletedTasks">
-          <list-item :task="item" :key="index" />
-          <q-separator />
+          <list-item :task="item" :key="index" @changeVisible="changeVisible" />
         </template>
+        <q-separator />
+
         <q-inner-loading :showing="visible">
           <q-spinner-puff size="50px" color="primary" />
         </q-inner-loading>
       </q-list>
-
-      <!-- place QPageScroller at end of page -->
-      <q-page-scroller
-        position="bottom-right"
-        :scroll-offset="150"
-        :offset="[18, 18]"
-      >
-        <q-btn fab icon="keyboard_arrow_up" color="accent" />
-      </q-page-scroller>
-    </q-page>
+    </q-pull-to-refresh>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import ListItem from '../components/ListItem';
 export default {
   name: 'TabList',
   components: {
     ListItem
   },
-  props: {
-    uncompletedTasks: {
-      type: Array,
-      default: function() {
-        return [];
-      }
+  data() {
+    return {
+      visible: true
+    };
+  },
+  computed: {
+    ...mapState('task', ['uncompletedTasks'])
+  },
+  methods: {
+    ...mapActions('task', ['getUncompletedTasks']),
+    fetchData() {
+      this.getUncompletedTasks()
+        .catch(() => {
+          this.$q.notify({
+            icon: 'warning',
+            color: 'warning',
+            message: '获取数据失败！',
+            timeout: 500
+          });
+        })
+        .finally(() => {
+          this.visible = false;
+        });
     },
-    visible: {
-      type: Boolean,
-      default: true
+    refresh(done) {
+      this.getUncompletedTasks()
+        .catch(() => {
+          this.$q.notify({
+            icon: 'warning',
+            color: 'warning',
+            message: '刷新失败！',
+            timeout: 500
+          });
+        })
+        .finally(() => {
+          done();
+        });
+    },
+    changeVisible(status) {
+      this.visible = status;
     }
+  },
+  created() {
+    this.fetchData();
   }
 };
 </script>

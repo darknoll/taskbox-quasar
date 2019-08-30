@@ -55,31 +55,35 @@ export default {
       'setSelectedUncompletedTask'
     ]),
     onLeft({ reset }) {
-      let option = this.task.receive_state ? 1 : 0;
-      let command = this.task.receive_state ? '取消接收' : '接收';
-      this.pickTask({ id: this.task.ObjectID, option: option })
-        .then(() => {
-          this.$q.notify({
-            icon: 'done',
-            color: 'positive',
-            message: `${command}任务成功！`,
-            timeout: 100
+      this.changeVisible(true);
+      this.$nextTick(() => {
+        let option = this.task.receive_state ? 1 : 0;
+        let command = this.task.receive_state ? '取消接收' : '接收';
+        this.pickTask({ id: this.task.ObjectID, option: option })
+          .then(() => {
+            this.$q.notify({
+              icon: 'done',
+              color: 'positive',
+              message: `${command}任务成功！`,
+              timeout: 100
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              icon: 'warning',
+              color: 'warning',
+              message: `${command}任务失败！`,
+              timeout: 100
+            });
+          })
+          .finally(() => {
+            reset();
+            this.changeVisible(false);
           });
-        })
-        .catch(() => {
-          this.$q.notify({
-            icon: 'warning',
-            color: 'warning',
-            message: `${command}任务失败！`,
-            timeout: 100
-          });
-        })
-        .finally(() => {
-          reset();
-        });
+      });
     },
-
     onRight({ reset }) {
+      this.changeVisible(true);
       this.getTaskOpList(this.task.ObjectID)
         .then(response => {
           let commands = response.data.data;
@@ -119,6 +123,7 @@ export default {
         })
         .finally(() => {
           reset();
+          this.changeVisible(false);
         });
     },
     onClick() {
@@ -127,6 +132,9 @@ export default {
         name: 'task',
         params: { id: this.task.ObjectID }
       });
+    },
+    changeVisible(status) {
+      this.$emit('changeVisible', status);
     }
   },
   beforeDestroy() {
@@ -141,7 +149,7 @@ export default {
 }
 .unread {
   ::v-deep .q-item {
-    border-left: 4px solid #fb8c;
+    border-left: 4px solid #027be3;
   }
 }
 .read {

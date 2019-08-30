@@ -3,23 +3,32 @@
     <q-header reveal class="text-white shadow-4 bg-main">
       <q-toolbar class="text-white">
         <q-btn flat round dense icon="arrow_back" @click="onBack" />
-        <q-toolbar-title
-          v-if="selectedUncompletedTask"
-          class="text-subtitle1"
-          >{{ taskTitle }}</q-toolbar-title
-        >
+        <q-toolbar-title v-if="selectedUncompletedTask" class="text-body1">{{
+          taskTitle
+        }}</q-toolbar-title>
       </q-toolbar>
 
       <q-tabs
         v-model="tab"
         dense
+        inline-label
         class="bg-transparent text-white no-padding"
         active-color="orange"
         indicator-color="orange"
         align="justify"
       >
-        <q-tab name="processInfo" label="流程信息" class="no-padding" />
-        <q-tab name="assObj" label="关联对象" class="no-padding" />
+        <q-tab
+          name="processInfo"
+          icon="apps"
+          label="流程信息"
+          class="no-padding"
+        />
+        <q-tab
+          name="assObj"
+          icon="camera"
+          label="关联对象"
+          class="no-padding"
+        />
       </q-tabs>
     </q-header>
     <q-page-container>

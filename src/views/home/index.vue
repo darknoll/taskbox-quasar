@@ -25,11 +25,11 @@
           <q-tabs
             v-model="tab"
             dense
+            inline-label
             class="bg-transparent text-white"
             active-color="orange"
             indicator-color="orange"
-            align="left"
-            narrow-indicator
+            align="justify"
           >
             <q-tab name="uncompleted" label="未完成任务" />
             <q-tab name="completed" label="已完成任务" />

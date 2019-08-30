@@ -1,6 +1,6 @@
 <template>
   <q-tab-panel :name="name">
-    <q-page>
+    <q-page padding>
       <div class="text-h6">Completed</div>
       Lorem ipsum dolor sit amet consectetur adipisicing elit.
     </q-page>
